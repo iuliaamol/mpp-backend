@@ -6,9 +6,12 @@ import com.example.mppBackend.entity.User;
 import com.example.mppBackend.exception.ResourceNotFoundException;
 import com.example.mppBackend.mapper.EventMapper;
 import com.example.mppBackend.mapper.UserMapper;
+import com.example.mppBackend.repository.EventRepository;
 import com.example.mppBackend.repository.UserRepository;
 import com.example.mppBackend.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +21,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    EventRepository eventRepository;
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = UserMapper.mapToUser(userDto);
@@ -55,10 +62,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
         User user=userRepository.findById(userId)
                 .orElseThrow(()->new ResourceNotFoundException("Invalid user"));
-
+        eventRepository.deleteByUserId(userId);
         userRepository.deleteById(userId);
     }
 }

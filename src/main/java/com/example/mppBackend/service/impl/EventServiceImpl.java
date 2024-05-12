@@ -6,7 +6,9 @@ import com.example.mppBackend.exception.ResourceNotFoundException;
 import com.example.mppBackend.mapper.EventMapper;
 import com.example.mppBackend.repository.EventRepository;
 import com.example.mppBackend.service.EventService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class EventServiceImpl implements EventService {
 
-    private EventRepository eventRepository;
+    @Autowired
+    EventRepository eventRepository;
 
     @Override
     public EventDto createEvent(EventDto eventDto) {
@@ -62,5 +65,10 @@ public class EventServiceImpl implements EventService {
         eventRepository.deleteById(eventId);
     }
 
+    @Override
+    @Transactional
+    public void deleteEventByUserId(Long userId){
+        eventRepository.deleteByUserId(userId);
+    }
 
 }
