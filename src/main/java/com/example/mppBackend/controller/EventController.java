@@ -4,6 +4,8 @@ import com.example.mppBackend.dto.EventDto;
 import com.example.mppBackend.entity.Event;
 import com.example.mppBackend.service.EventService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.RequestEntity;
@@ -40,6 +42,14 @@ public class EventController {
         List<EventDto> eventDtos=eventService.getAllEvents();
         return ResponseEntity.ok(eventDtos);
     }
+
+//    @GetMapping("/events")
+//    public ResponseEntity<Page<EventDto>> getAllEvents(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "50") int size) {
+//        Page<EventDto> eventPage = (Page<EventDto>) eventService.getAllEvents(PageRequest.of(page, size));
+//        return ResponseEntity.ok(eventPage);
+//    }
 
     //build update event rest api
     @PutMapping("{id}")

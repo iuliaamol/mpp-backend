@@ -9,6 +9,9 @@ import com.example.mppBackend.service.EventService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +47,12 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
     }
 
+//    @Override
+//    public Page<EventDto> getAllEvents(Pageable pageable) {
+//        Page<Event> eventPage = eventRepository.findAll(pageable);
+//        return eventPage.map(EventMapper::mapToEventDto);
+//    }
+
     @Override
     public EventDto updateEvent(Long eventId, EventDto updatedEvent) {
         Event event=eventRepository.findById(eventId).orElseThrow(
@@ -71,4 +80,9 @@ public class EventServiceImpl implements EventService {
         eventRepository.deleteByUserId(userId);
     }
 
+//    @Override
+//    public Page<Event> getEventsByUserId(Long userId, int pageNumber, int pageSize) {
+//        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+//        return eventRepository.findByUserId(userId, pageRequest);
+//    }
 }
