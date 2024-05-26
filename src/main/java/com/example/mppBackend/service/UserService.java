@@ -1,6 +1,5 @@
 package com.example.mppBackend.service;
 
-import com.example.mppBackend.dto.EventDto;
 import com.example.mppBackend.dto.UserDto;
 
 import java.util.List;
@@ -14,4 +13,5 @@ public interface UserService {
     void deleteUser(Long userId);
 
 
+    Long getUserIdByUsername(String username);
 }

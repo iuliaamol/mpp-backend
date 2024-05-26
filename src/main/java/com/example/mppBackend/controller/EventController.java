@@ -2,14 +2,13 @@ package com.example.mppBackend.controller;
 
 import com.example.mppBackend.dto.EventDto;
 import com.example.mppBackend.entity.Event;
+import com.example.mppBackend.entity.User;
 import com.example.mppBackend.service.EventService;
+import com.example.mppBackend.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +20,11 @@ import java.util.List;
 public class EventController {
 
     private EventService  eventService;
+    private UserService userService;
 
     //build add event rest api
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<EventDto> createEvent( @RequestBody EventDto eventDto){
         EventDto savedEvent=eventService.createEvent(eventDto);
         return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
@@ -31,6 +32,7 @@ public class EventController {
 
     //build get event rest api
     @GetMapping("{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<EventDto> getEventById(@PathVariable("id") Long eventId){
         EventDto eventDto=eventService.getEventById(eventId);
         return ResponseEntity.ok(eventDto);
@@ -43,16 +45,9 @@ public class EventController {
         return ResponseEntity.ok(eventDtos);
     }
 
-//    @GetMapping("/events")
-//    public ResponseEntity<Page<EventDto>> getAllEvents(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "50") int size) {
-//        Page<EventDto> eventPage = (Page<EventDto>) eventService.getAllEvents(PageRequest.of(page, size));
-//        return ResponseEntity.ok(eventPage);
-//    }
-
     //build update event rest api
     @PutMapping("{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<EventDto> updateEvent(@PathVariable("id") Long eventId,
                                                 @RequestBody EventDto updatedEvent){
         EventDto eventDto=eventService.updateEvent(eventId,updatedEvent);
@@ -61,8 +56,21 @@ public class EventController {
 
     //build delete event rest api
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> deleteEvent(@PathVariable("id") Long eventId){
         eventService.deleteEvent(eventId);
         return ResponseEntity.ok("Event deleted successfully");
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<EventDto>> getAllEventsByUserId(@PathVariable("userId") Long userId) {
+        List<EventDto> eventDtos = eventService.getAllEventsByUserId(userId);
+        return ResponseEntity.ok(eventDtos);
+    }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<List<EventDto>> getAllEventsByUsername(@PathVariable("username") String username) {
+        List<EventDto> eventDtos = eventService.getAllEventsByUsername(username);
+        return ResponseEntity.ok(eventDtos);
     }
 }

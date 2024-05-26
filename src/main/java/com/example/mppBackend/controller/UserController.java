@@ -1,5 +1,6 @@
 package com.example.mppBackend.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.example.mppBackend.dto.UserDto;
 import com.example.mppBackend.service.UserService;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,8 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         UserDto savedUser = userService.createUser(userDto);
@@ -36,15 +39,20 @@ public class UserController {
 
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId, @RequestBody UserDto updatedUser) {
         UserDto userDto = userService.updateUser(userId, updatedUser);
         return ResponseEntity.ok(userDto);
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("User deleted successfully");
     }
+
+
 }

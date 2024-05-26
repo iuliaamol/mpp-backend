@@ -1,10 +1,8 @@
 package com.example.mppBackend.service.impl;
 
 import com.example.mppBackend.dto.UserDto;
-import com.example.mppBackend.entity.Event;
 import com.example.mppBackend.entity.User;
 import com.example.mppBackend.exception.ResourceNotFoundException;
-import com.example.mppBackend.mapper.EventMapper;
 import com.example.mppBackend.mapper.UserMapper;
 import com.example.mppBackend.repository.EventRepository;
 import com.example.mppBackend.repository.UserRepository;
@@ -15,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +26,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     EventRepository eventRepository;
     @Override
+    @Transactional
     public UserDto createUser(UserDto userDto) {
         User user = UserMapper.mapToUser(userDto);
         User savedUser = userRepository.save(user);
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAllUsers() {
         List<User> users=userRepository.findAll();
-        return users.stream().map(user -> UserMapper.mapToUserDto(user))
+        return users.stream().map(UserMapper::mapToUserDto)
                 .collect(Collectors.toList());
     }
 
@@ -68,5 +68,11 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(()->new ResourceNotFoundException("Invalid user"));
         eventRepository.deleteByUserId(userId);
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public Long getUserIdByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        return Long.valueOf(userOptional.map(User::getId).orElse(null));
     }
 }

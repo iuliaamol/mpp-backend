@@ -6,12 +6,10 @@ import com.example.mppBackend.exception.ResourceNotFoundException;
 import com.example.mppBackend.mapper.EventMapper;
 import com.example.mppBackend.repository.EventRepository;
 import com.example.mppBackend.service.EventService;
+import com.example.mppBackend.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +21,8 @@ public class EventServiceImpl implements EventService {
 
     @Autowired
     EventRepository eventRepository;
+    @Autowired
+    UserService userService;
 
     @Override
     public EventDto createEvent(EventDto eventDto) {
@@ -43,7 +43,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDto> getAllEvents() {
         List<Event> events =eventRepository.findAll();
-        return events.stream().map((event)->EventMapper.mapToEventDto(event))
+        return events.stream().map(EventMapper::mapToEventDto)
                 .collect(Collectors.toList());
     }
 
@@ -85,4 +85,27 @@ public class EventServiceImpl implements EventService {
 //        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
 //        return eventRepository.findByUserId(userId, pageRequest);
 //    }
+
+    @Override
+    public List<EventDto> getAllEventsByUserId(Long userId) {
+        List<Event> events = eventRepository.findByUserId(userId);
+        return events.stream()
+                .map(EventMapper::mapToEventDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<EventDto> getAllEventsByUsername(String username) {
+        // Retrieve user ID corresponding to the username
+        Long userId = userService.getUserIdByUsername(username);
+
+        // Fetch events associated with the user ID
+        List<Event> events = eventRepository.findByUserId(userId);
+
+        // Map events to EventDto objects
+        return events.stream()
+                .map(EventMapper::mapToEventDto)
+                .collect(Collectors.toList());
+    }
 }

@@ -15,6 +15,11 @@ public interface EventService {
     void deleteEvent(Long eventId);
     void deleteEventByUserId(Long userId);
 
+    List<EventDto> getAllEventsByUserId(Long userId);
+
+    List<EventDto> getAllEventsByUsername(String username);
+
+
     //Page<EventDto> getAllEvents(Pageable pageable);
     //Page<Event> getEventsByUserId(Long userId, int pageNumber, int pageSize);
 }

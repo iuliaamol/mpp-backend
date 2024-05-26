@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface EventRepository extends JpaRepository<Event,Long> {
@@ -16,6 +18,5 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     @Query("DELETE  Event e WHERE e.user.id = :userId")
     void deleteByUserId(@Param("userId") Long userId);
 
-    @Query("SELECT e FROM Event e WHERE e.user.id = :userId")
-    Page<Event> findByUserId(@Param("userId") Long userId, Pageable pageable);
+    List<Event> findByUserId(Long userId);
 }

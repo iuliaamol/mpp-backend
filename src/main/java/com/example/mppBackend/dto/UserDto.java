@@ -1,15 +1,14 @@
 package com.example.mppBackend.dto;
 
 import com.example.mppBackend.entity.Event;
+import com.example.mppBackend.entity.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,5 +18,8 @@ public class UserDto {
     private String username;
     private String email;
     private String password;
+    private Role role;
 
+    public UserDto(Integer id, String username, String email, String password, Role role) {
+    }
 }

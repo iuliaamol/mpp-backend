@@ -1,18 +1,19 @@
-package com.example.mppBackend.utils;
-
-import com.example.mppBackend.entity.Event;
-import com.example.mppBackend.entity.User;
-import com.example.mppBackend.repository.EventRepository;
-import com.example.mppBackend.repository.UserRepository;
-import com.github.javafaker.Faker;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-
+//package com.example.mppBackend.utils;
+//
+//import com.example.mppBackend.entity.Event;
+//import com.example.mppBackend.entity.Role;
+//import com.example.mppBackend.entity.User;
+//import com.example.mppBackend.repository.EventRepository;
+//import com.example.mppBackend.repository.UserRepository;
+//import com.github.javafaker.Faker;
+//import jakarta.transaction.Transactional;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.CommandLineRunner;
+//import org.springframework.stereotype.Component;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//
 //@Component
 //public class DataGenerator implements CommandLineRunner {
 //    @Autowired
@@ -21,8 +22,8 @@ import java.util.List;
 //    @Autowired
 //    private EventRepository eventRepository;
 //
-//    private static final int NUM_USERS=1000;
-//    private static final int EVENTS_PER_USER=100;
+//    private static final int NUM_USERS=100;
+//    private static final int EVENTS_PER_USER=10;
 //
 //    @Override
 //    @Transactional
@@ -36,6 +37,7 @@ import java.util.List;
 //            user.setUsername(faker.name().username());
 //            user.setEmail(faker.internet().emailAddress());
 //            user.setPassword(faker.internet().password());
+//            user.setRole(Role.USER);
 //            users.add(user);
 //        }
 //        userRepository.saveAll(users);

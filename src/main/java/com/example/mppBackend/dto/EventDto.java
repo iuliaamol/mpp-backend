@@ -1,11 +1,9 @@
 package com.example.mppBackend.dto;
 
 import com.example.mppBackend.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,4 +14,7 @@ public class EventDto {
     private String type;
     private double price;
     private Long userId;//store just the id of the user
+
+    public EventDto(Long id, String name, String type, double price, Integer integer) {
+    }
 }

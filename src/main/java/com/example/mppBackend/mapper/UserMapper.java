@@ -11,16 +11,19 @@ public class UserMapper {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getPassword()
+                user.getPassword(),
+                user.getRole()
                 );
     }
 
     public static User mapToUser(UserDto userDto){
         return new User(
-                userDto.getId(),
+                Math.toIntExact(userDto.getId()),
                 userDto.getUsername(),
                 userDto.getEmail(),
-                userDto.getPassword()
+                userDto.getPassword(),
+                userDto.getRole()
+
                 );
     }
 }
