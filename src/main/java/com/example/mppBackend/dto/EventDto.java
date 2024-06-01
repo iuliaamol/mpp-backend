@@ -13,8 +13,6 @@ public class EventDto {
     private String name;
     private String type;
     private double price;
-    private Long userId;//store just the id of the user
+    private Integer userId;//store just the id of the user
 
-    public EventDto(Long id, String name, String type, double price, Integer integer) {
-    }
 }
