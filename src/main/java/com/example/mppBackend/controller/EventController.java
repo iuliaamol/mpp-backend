@@ -1,8 +1,7 @@
 package com.example.mppBackend.controller;
 
+import com.example.mppBackend.config.JwtService;
 import com.example.mppBackend.dto.EventDto;
-import com.example.mppBackend.entity.Event;
-import com.example.mppBackend.entity.User;
 import com.example.mppBackend.service.EventService;
 import com.example.mppBackend.service.UserService;
 import lombok.AllArgsConstructor;
@@ -21,6 +20,7 @@ public class EventController {
 
     private EventService  eventService;
     private UserService userService;
+    private JwtService jwtService;
 
     //build add event rest api
     @PostMapping
@@ -62,15 +62,25 @@ public class EventController {
         return ResponseEntity.ok("Event deleted successfully");
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<EventDto>> getAllEventsByUserId(@PathVariable("userId") Long userId) {
-        List<EventDto> eventDtos = eventService.getAllEventsByUserId(userId);
-        return ResponseEntity.ok(eventDtos);
-    }
+//    @GetMapping("/user/{userId}")
+//    public ResponseEntity<List<EventDto>> getAllEventsByUserId(@PathVariable("userId") Long userId) {
+//        List<EventDto> eventDtos = eventService.getAllEventsByUserId(userId);
+//        return ResponseEntity.ok(eventDtos);
+//    }
 
-    @GetMapping("/user/{username}")
-    public ResponseEntity<List<EventDto>> getAllEventsByUsername(@PathVariable("username") String username) {
-        List<EventDto> eventDtos = eventService.getAllEventsByUsername(username);
-        return ResponseEntity.ok(eventDtos);
+
+
+    @GetMapping("/user")
+    public ResponseEntity<List<EventDto>> getUserEvents(@RequestHeader("Authorization") String token) {
+        try {
+            System.out.println("String token: " + token.split(" ")[1]);
+            String username = jwtService.getUsernameFromToken(token.split(" ")[1]);
+           // System.out.println("String userId: " + userId);
+            List<EventDto> userEvents = eventService.getAllEventsByUserId(username);
+
+            return ResponseEntity.ok(userEvents);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }

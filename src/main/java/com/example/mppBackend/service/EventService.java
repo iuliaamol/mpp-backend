@@ -15,9 +15,9 @@ public interface EventService {
     void deleteEvent(Long eventId);
     void deleteEventByUserId(Long userId);
 
-    List<EventDto> getAllEventsByUserId(Long userId);
+    List<EventDto> getAllEventsByUserId(String username);
 
-    List<EventDto> getAllEventsByUsername(String username);
+
 
 
     //Page<EventDto> getAllEvents(Pageable pageable);

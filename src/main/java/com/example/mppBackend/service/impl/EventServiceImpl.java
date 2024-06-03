@@ -87,7 +87,8 @@ public class EventServiceImpl implements EventService {
 //    }
 
     @Override
-    public List<EventDto> getAllEventsByUserId(Long userId) {
+    public List<EventDto> getAllEventsByUserId(String username) {
+        Long userId=userService.getUserIdByUsername(username);
         List<Event> events = eventRepository.findByUserId(userId);
         return events.stream()
                 .map(EventMapper::mapToEventDto)
@@ -95,17 +96,5 @@ public class EventServiceImpl implements EventService {
     }
 
 
-    @Override
-    public List<EventDto> getAllEventsByUsername(String username) {
-        // Retrieve user ID corresponding to the username
-        Long userId = userService.getUserIdByUsername(username);
 
-        // Fetch events associated with the user ID
-        List<Event> events = eventRepository.findByUserId(userId);
-
-        // Map events to EventDto objects
-        return events.stream()
-                .map(EventMapper::mapToEventDto)
-                .collect(Collectors.toList());
-    }
 }
